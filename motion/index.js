@@ -8,8 +8,11 @@ module.exports = new class Alb3rtSecurityMasterMotion {
     constructor() {}
 
     record(ip, port) {
-        http.get({
-            url: `http://${ip}:${port}/api/record`
+        http.post({
+            url: `http://${ip}:${port}/api/record`,
+            body: {
+                state: 'on'
+            }
         })
         .catch(error => {
             logger.warn(FILE_ID, `Camera record triggering error. Status: ${error}`);
@@ -23,9 +26,9 @@ module.exports = new class Alb3rtSecurityMasterMotion {
         if (state.current.enabled) {
             logger.warn(FILE_ID, `${event}, handling...`);
 
-            if (device.camera && parseInt(device.camera, 10)) {
+            if (device.camera_port) {
                 logger.log(FILE_ID, 'Device equipped with camera, triggering recording...');
-                this.record(ip, port);
+                this.record(ip, parseInt(device.camera_port, 10));
             }
 
             if (state.current.armed) {
