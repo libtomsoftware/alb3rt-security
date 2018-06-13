@@ -70,7 +70,7 @@ module.exports = new class Alb3rtSecurityState {
             return status.conflict;
         }
 
-        (requested === true ? this.enable : this.disable)();
+        (requested === 'enabled' ? this.enable : this.disable)();
         return status.ok;
     }
 
